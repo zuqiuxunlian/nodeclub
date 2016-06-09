@@ -21,7 +21,8 @@ var auth = require('./middlewares/auth');
 var limit = require('./middlewares/limit');
 var github = require('./controllers/github');
 var search = require('./controllers/search');
-var passport = require('passport');
+var passport = require('passport')
+  ,WeixinStrategy = require('passport-weixin');
 var configMiddleware = require('./middlewares/conf');
 var config = require('./config');
 
@@ -117,6 +118,52 @@ router.get('/auth/github/callback',
   github.callback);
 router.get('/auth/github/new', github.new);
 router.post('/auth/github/create', limit.peripperday('create_user_per_ip', config.create_user_per_ip, {showJson: false}), github.create);
+
+//扫码登录
+//微信官网文档：https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=&lang=zh_CN
+passport.use('loginByWeixin',new WeixinStrategy({
+  clientID: 'wx522401779da1c001'
+  , clientSecret: '6b49e80e0586b76aacd23c9036dc05cc'
+  , callbackURL: 'https://bbs.zuqiuxunlian.com/auth/weixin/callback'
+  , requireState: false
+  , scope: 'snsapi_login'
+}, function(accessToken, refreshToken, profile, done){
+  done(null, profile);
+}));
+
+//微信客户端登录
+//微信官网文档：http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html
+passport.use('loginByWeixinClient',new WeixinStrategy({
+  clientID: 'wx522401779da1c001'
+  , clientSecret: '6b49e80e0586b76aacd23c9036dc05cc'
+  , callbackURL: 'https://bbs.zuqiuxunlian.com/auth/weixin/callback'
+  , requireState: false
+  , authorizationURL: 'https://open.weixin.qq.com/connect/oauth2/authorize' //[公众平台-网页授权获取用户基本信息]的授权URL 不同于[开放平台-网站应用微信登录]的授权URL
+  , scope: 'snsapi_userinfo' //[公众平台-网页授权获取用户基本信息]的应用授权作用域 不同于[开放平台-网站应用微信登录]的授权URL
+}, function(accessToken, refreshToken, profile, done){
+  done(null, profile);
+}));
+
+// weixin oauth
+//在PC端通过扫描登录，使用/auth/loginByWeixin
+router.get("/auth/weixin",
+    passport.authenticate('loginByWeixin', {
+        successRedirect: '/test/hello',
+        failureRedirect: '/login'
+    })
+);
+
+router.get("/auth/weixin/callback", function(req, res) {
+  res.send('hello world');
+});
+
+// 在微信客户端登录，使用/auth/loginByWeixinClient
+router.get("/auth/weixin/client",
+    passport.authenticate('loginByWeixinClient', {
+        successRedirect: '/test/hello',
+        failureRedirect: '/login'
+    })
+);
 
 router.get('/search', search.index);
 
