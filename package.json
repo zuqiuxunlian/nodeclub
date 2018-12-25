@@ -26,7 +26,7 @@
     "ioredis": "1.15.1",
     "jpush-sdk": "3.3.2",
     "loader": "2.1.1",
-    "loader-builder": "2.4.1",
+    "loader-builder": "2.6.1",
     "lodash": "4.16.2",
     "log4js": "^0.6.29",
     "markdown-it": "6.0.0",
