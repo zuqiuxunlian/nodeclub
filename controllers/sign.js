@@ -66,8 +66,8 @@ exports.signup = function (req, res, next) {
         if (err) {
           return next(err);
         }
-        // 发送激活邮件
-        mail.sendActiveMail(email, utility.md5(email + passhash + config.session_secret), loginname);
+        // 发送激活邮件 @ten 邀请制
+        // mail.sendActiveMail(email, utility.md5(email + passhash + config.session_secret), loginname);
         res.render('sign/signup', {
           success: '欢迎注册，' + config.name + '！本论坛目前仅支持会员登录，请在沙龙会员群联系王腾激活您的帐号。'
         });
