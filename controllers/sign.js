@@ -143,8 +143,8 @@ exports.login = function (req, res, next) {
         return ep.emit('login_error');
       }
       if (!user.active) {
-        // 重新发送激活邮件
-        mail.sendActiveMail(user.email, utility.md5(user.email + passhash + config.session_secret), user.loginname);
+        // 重新发送激活邮件 @ten 邀请制
+        // mail.sendActiveMail(user.email, utility.md5(user.email + passhash + config.session_secret), user.loginname);
         res.status(403);
         return res.render('sign/signin', { error: '此帐号还没有被激活，请在沙龙会员群联系王腾激活您的帐号。' });
       }
