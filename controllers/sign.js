@@ -66,10 +66,10 @@ exports.signup = function (req, res, next) {
         if (err) {
           return next(err);
         }
-        // 发送激活邮件 @ten 邀请制
-        // mail.sendActiveMail(email, utility.md5(email + passhash + config.session_secret), loginname);
+        // 发送激活邮件 
+        mail.sendActiveMail(email, utility.md5(email + passhash + config.session_secret), loginname);
         res.render('sign/signup', {
-          success: '欢迎注册，' + config.name + '！本论坛目前仅支持会员登录，请在沙龙会员群联系王腾激活您的帐号。'
+          success: '欢迎加入 ' + config.name + '！我们已给您的注册邮箱发送了一封邮件，请点击里面的链接来激活您的帐号。'
         });
       });
 
@@ -143,10 +143,10 @@ exports.login = function (req, res, next) {
         return ep.emit('login_error');
       }
       if (!user.active) {
-        // 重新发送激活邮件 @ten 邀请制
-        // mail.sendActiveMail(user.email, utility.md5(user.email + passhash + config.session_secret), user.loginname);
+        // 重新发送激活邮件
+        mail.sendActiveMail(user.email, utility.md5(user.email + passhash + config.session_secret), user.loginname);
         res.status(403);
-        return res.render('sign/signin', { error: '此帐号还没有被激活，请在沙龙会员群联系王腾激活您的帐号。' });
+        return res.render('sign/signin', { error: '此帐号还没有被激活，激活链接已发送到 ' + user.email + ' 邮箱，请查收。' });
       }
       // store session cookie
       authMiddleWare.gen_session(user, res);
