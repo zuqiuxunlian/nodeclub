@@ -90,6 +90,13 @@
             </a>
         </li>
         <% } %>
+        <% if (current_user){ %>
+        <li>
+            <a href='/topic/create'>
+              发布话题
+            </a>
+        </li>
+        <% } %>
         <li><a href='/getstart'>新手入门</a></li>
         <!-- <li><a href='/api'>API</a></li> -->
         <%
