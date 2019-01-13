@@ -109,7 +109,7 @@ exports.newAndSave = function (name, loginname, pass, email, avatar_url, active,
 };
 
 var makeGravatar = function (email) {
-  return 'http://www.gravatar.com/avatar/' + utility.md5(email.toLowerCase()) + '?size=48&d=monsterid';
+  return 'http://cdn.v2ex.com/gravatar/' + utility.md5(email.toLowerCase()) + '?size=48&d=monsterid';
 };
 exports.makeGravatar = makeGravatar;
 

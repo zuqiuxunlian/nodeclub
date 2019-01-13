@@ -6,7 +6,7 @@ var _ = require('lodash')
 
 var ALLOW_HOSTNAME = [
   'avatars.githubusercontent.com', 'www.gravatar.com',
-  'gravatar.com', 'www.google-analytics.com',
+  'gravatar.com', 'www.google-analytics.com', 'cdn.v2ex.com',
 ];
 exports.proxy = function (req, res, next) {
   var url = decodeURIComponent(req.query.url);
