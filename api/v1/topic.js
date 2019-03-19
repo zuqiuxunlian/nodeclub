@@ -20,7 +20,7 @@ var index = function (req, res, next) {
 
   var query = {};
   if (!tab || tab === 'all') {
-    query.tab = {$nin: ['job', 'dev']}
+    query.tab = {$nin: ['news', 'dev']}
   } else {
     if (tab === 'good') {
       query.good = true;
@@ -237,4 +237,3 @@ exports.update = function (req, res, next) {
     }
   });
 };
-
