@@ -151,3 +151,8 @@ exports.sitemap = function (req, res, next) {
 exports.appDownload = function (req, res, next) {
   res.redirect('https://github.com/soliury/noder-react-native/blob/master/README.md')
 };
+
+exports.weapp = function (req, res, next) {
+    res.set('Content-Type', 'text/html');
+    res.send('3c04583c227b830d897d645fd957be0b');
+};
