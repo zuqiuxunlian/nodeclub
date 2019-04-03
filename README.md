@@ -36,7 +36,7 @@ Nodeclub 是使用 **Node.js** 和 **MongoDB** 开发的社区系统，界面优
 7. visit `http://localhost:3000`
 8. done!
 ```
-如果改了资源注意重新编译：`make restart`
+如果改了资源注意重新编译：`make build`
 ## 测试
 
 跑测试
