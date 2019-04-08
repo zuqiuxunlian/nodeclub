@@ -34,6 +34,8 @@ var config = {
   // 默认的cnzz tracker ID，自有站点请修改
   cnzz_tracker_id: '',
 
+  baidu_tracker_id: '',
+  
   // mongodb 配置
   db: 'mongodb://127.0.0.1/node_club_dev',
 
