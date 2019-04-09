@@ -1,4 +1,7 @@
-足球教练社区代码fork自CNODEjs社区版 https://github.com/cnodejs/nodeclub
+足球教练社区代码fork自CNODEjs社区版
+
+https://github.com/cnodejs/nodeclub
+
 感谢社区的贡献和支持。
 
 Nodeclub
