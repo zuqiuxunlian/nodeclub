@@ -26,6 +26,9 @@ router.get('/topic_collect/:loginname', topicCollectController.list);
 
 // 用户
 router.get('/user/:loginname', userController.show);
+router.post('/user/login', userController.login);
+router.post('/user/wxAuth', userController.wxAuth);
+router.put('/user', userController.putAction);
 
 
 

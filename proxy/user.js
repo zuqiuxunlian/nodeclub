@@ -19,17 +19,31 @@ exports.getUsersByNames = function (names, callback) {
 };
 
 /**
- * 根据登录名查找用户
+ * 根据openid查找用户
  * Callback:
  * - err, 数据库异常
  * - user, 用户
- * @param {String} loginName 登录名
+ * @param {String} openid 微信openid
  * @param {Function} callback 回调函数
  */
-exports.getUserByLoginName = function (loginName, callback) {
-  User.findOne({'loginname': new RegExp('^'+loginName+'$', "i")}, callback);
+exports.getUserByOpenid = function (openid, callback) {
+  User.findOne({'openid': openid}, callback);
 };
 
+/**
+ * 根据用户ID，查找用户
+ * Callback:
+ * - err, 数据库异常
+ * - user, 用户
+ * @param {String} id 用户ID
+ * @param {Function} callback 回调函数
+ */
+exports.getUserById = function (id, callback) {
+  if (!id) {
+    return callback();
+  }
+  User.findOne({_id: id}, callback);
+};
 /**
  * 根据用户ID，查找用户
  * Callback:
