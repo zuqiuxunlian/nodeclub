@@ -43,6 +43,8 @@ var UserSchema = new Schema({
   retrieve_key: {type: String},
 
   accessToken: {type: String},
+  openid: { type: String},
+  wxUserInfo: { type: Object},
 });
 
 UserSchema.plugin(BaseModel);
@@ -72,6 +74,7 @@ UserSchema.index({email: 1}, {unique: true});
 UserSchema.index({score: -1});
 UserSchema.index({githubId: 1});
 UserSchema.index({accessToken: 1});
+UserSchema.index({openid: 1});
 
 UserSchema.pre('save', function(next){
   var now = new Date();
