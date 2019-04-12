@@ -1,10 +1,14 @@
 var crypto = require('crypto')
 
-function WXBizDataCrypt(appId, secret) {
+function WXBizDataCrypt(appId, sessionKey) {
   return {
+    appId:appId,
+    sessionKey:sessionKey,
     decryptData: function (encryptedData, iv) {
+      console.error(this.appId,this.sessionKey,encryptedData,iv)
+
       // base64 decode
-      var sessionKey = new Buffer(secret, 'base64')
+      var sessionKey = new Buffer(this.sessionKey, 'base64')
       encryptedData = new Buffer(encryptedData, 'base64')
       iv = new Buffer(iv, 'base64')
 
@@ -22,7 +26,7 @@ function WXBizDataCrypt(appId, secret) {
         throw new Error('Illegal Buffer')
       }
 
-      if (decoded.watermark.appid !== appId) {
+      if (decoded.watermark.appid !== this.appId) {
         throw new Error('Illegal Buffer')
       }
 
