@@ -19,6 +19,7 @@
   "browser": true,
   "node": true,
   "es5": true,
+  "esversion": 6,
   "bitwise": true,
   "curly": true,
   "eqeqeq": true,
