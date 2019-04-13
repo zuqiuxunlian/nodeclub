@@ -75,7 +75,7 @@ exports.show = show;
 exports.me = function (req, res, next) {
   return res.status(200).json({
       success: true,
-      data: {user: req.user}
+      data: req.user
   })
 }
 // 本站用戶綁定微信用戶
@@ -129,7 +129,7 @@ exports.weixinLogin = async function (req, res, next) {
         });
         return res.status(200).json({
             success: true,
-            data: {jwtToken: token}
+            data: token
         })
     } catch (e) {
         return res.status(500).json({
