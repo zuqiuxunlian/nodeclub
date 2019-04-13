@@ -8,12 +8,14 @@ var ReplyProxy = require('../../proxy').Reply;
 var TopicCollect = require('../../proxy').TopicCollect;
 var WXBizDataCrypt = require('../../common/WXBizDataCrypt');
 var WEIXIN_OAUTH = require('../../config').WEIXIN_OAUTH;
+var jwtSecret = require('../../config').session_secret;
 var models = require('../../models');
 var User = models.User;
 var tools = require('../../common/tools');
-var jwtSecret = 'k4TrFwWSGAFPE7MdAh1NrZ5YZHKbrkW5'
 var got = require('got')
 var uuid    = require('node-uuid');
+var shortid = require('shortid');
+
 var show = function (req, res, next) {
     var loginname = req.params.loginname;
     var ep = new eventproxy();
@@ -96,8 +98,9 @@ exports.weixinLogin = async function (req, res, next) {
         if (!user) { //找不到用户就创建用户
             user = new User();
             user.name = userInfo.nickName;
-            user.loginname = userInfo.nickName;
-            user.pass = tools.bhash('pass');
+            user.location = userInfo.city;
+            user.loginname = shortid.generate();
+            user.pass = tools.bhash('');
             user.email = '';
             user.avatar = userInfo.avatarUrl;
             user.active = true;

@@ -43,8 +43,7 @@ var UserSchema = new Schema({
   retrieve_key: {type: String},
 
   accessToken: {type: String},
-  openid: { type: String},
-  wxUserInfo: { type: Object},
+  openid: { type: String}
 });
 
 UserSchema.plugin(BaseModel);
@@ -70,7 +69,7 @@ UserSchema.virtual('isAdvanced').get(function () {
 });
 
 UserSchema.index({loginname: 1}, {unique: true});
-UserSchema.index({email: 1}, {unique: true});
+UserSchema.index({email: 1});
 UserSchema.index({score: -1});
 UserSchema.index({githubId: 1});
 UserSchema.index({accessToken: 1});
