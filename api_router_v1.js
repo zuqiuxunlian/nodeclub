@@ -26,8 +26,8 @@ router.get('/topic_collect/:loginname', topicCollectController.list);
 
 // 用户
 router.get('/user/:loginname', userController.show);
-router.post('/user/login', userController.login);
-router.post('/user/wxAuth', userController.wxAuth);
+router.post('/user/weixin/bind', userController.weixinBind);
+router.post('/user/weixin/login', userController.weixinLogin);
 router.put('/user', userController.putAction);
 
 

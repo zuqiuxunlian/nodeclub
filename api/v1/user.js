@@ -12,6 +12,8 @@ var models = require('../../models');
 var User = models.User;
 var tools = require('../../common/tools');
 var jwtSecret = 'k4TrFwWSGAFPE7MdAh1NrZ5YZHKbrkW5'
+var got = require('got')
+var uuid    = require('node-uuid');
 var show = function (req, res, next) {
     var loginname = req.params.loginname;
     var ep = new eventproxy();
@@ -68,138 +70,72 @@ var show = function (req, res, next) {
 
 exports.show = show;
 
-// 登录获取token
-exports.login = function (req, res, next) {
+// 本站用戶綁定微信用戶
+exports.weixinBind =  function(req,res,next){
+    var token = validator.trim(req.body.token || req.query.token || req.headers['x-access-token']);
     var loginname = validator.trim(req.body.name).toLowerCase();
     var pass = validator.trim(req.body.pass);
-    var ep = new eventproxy();
-
-    ep.fail(next);
-
-    if (!loginname || !pass) {
-        res.status(422);
-        return res.render('sign/signin', {error: '信息不完整。'});
-    }
-
-    var getUser;
-    if (loginname.indexOf('@') !== -1) {
-        getUser = User.getUserByMail;
-    } else {
-        getUser = User.getUserByLoginName;
-    }
-
-    ep.on('login_error', function (login_error) {
-        res.status(403);
-        return res.json({success: false, error_msg: '用户或密码错误'});
-    });
-
-    getUser(loginname, function (err, user) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return ep.emit('login_error');
-        }
-        var passhash = user.pass;
-        tools.bcompare(pass, passhash, ep.done(function (bool) {
-            if (!bool) {
-                return ep.emit('login_error');
-            }
-            if (!user.active) {
-                // 重新发送激活邮件
-                mail.sendActiveMail(user.email, utility.md5(user.email + passhash + config.session_secret), user.loginname);
-                res.status(403);
-                return res.json({success: false, error_msg: '此帐号还没有被激活，激活链接已发送到 ' + user.email + ' 邮箱，请查收。'});
-            }
-            // 生成jwt
-            var token = jwt.sign(user._id, jwtSecret, {
-                expiresIn: 60 * 60 * 24// 授权时效24小时
-            });
-            return res.json({success: true, error_msg: '', data: token});
-        }));
-    });
-};
-
-exports.wxAuth = function (req, res, next) {
-    var encryptedData = validator.trim(req.body.encryptedData || '');
-    var iv = validator.trim(req.body.iv || '');
-    var token = validator.trim(req.body.token || req.query.token || req.headers['x-access-token']);
-    var data = WXBizDataCrypt(WEIXIN_OAUTH.appid, WEIXIN_OAUTH.secret).decryptData(encryptedData, iv);
-    var openid = data.openId
-    var ep = new eventproxy();
-    var userId = ''
-    if (token) {
-        // 解码 token (验证 secret 和检查有效期（exp）)
-        jwt.verify(token, jwtSecret, function (err, _decoded) {
-            if (err) {
-                return res.json({success: false, error_msg: '无效的token.'});
-            } else {
-                // 如果验证通过，在req中写入解密结果
-                userId = _decoded;
-            }
+    // TODO: 需要讨论一下绑定流程
+}
+exports.weixinLogin = async function (req, res, next) {
+    try {
+        var encryptedData = validator.trim(req.body.authInfo.encryptedData || '');
+        var iv = validator.trim(req.body.authInfo.iv || '');
+        var code = validator.trim(req.body.code || '');
+        const resJson = await got(`https://api.weixin.qq.com/sns/jscode2session?appid=${WEIXIN_OAUTH.appid}&secret=${WEIXIN_OAUTH.secret}&js_code=${code}&grant_type=authorization_code`, {
+            json: true
         });
-    } else {
-        return res.status(403).json({
-            success: false,
-            error_msg: '请先登录获取token'
-        })
-    }
-    ep.fail(next);
-    UserProxy.getUserByOpenid(openid, ep.done(function (user) {
-        if (!user) {
-            // 通过openid找不到用户就绑定当前用户
-            UserProxy.getUserById(userId, ep.done(function (user2) {
-                if (!user2) {
-                    // 还找不到就是当前用户已删除
-                    return res.status(404).json({
-                        success: false,
-                        error_msg: '无法找到该用户，请重新登陆获取token'
-                    })
-                }
-                User.update({
-                    _id: user2._id
-                }, {
-                    openid: openid
-                })
-
-                return res.status(200).json({
-                    success: true,
-                    error_msg: '绑定成功',
-                    data: {
-                        name: user2.name,
-                        profile_image_url: user2.profile_image_url,
-                        score: user2.score,
-                    }
-                })
-            }))
+        console.log(resJson.body)
+        const sessionKey = resJson.body.session_key;
+        var data = WXBizDataCrypt(WEIXIN_OAUTH.appid, sessionKey).decryptData(encryptedData, iv);
+        var openid = data.openId
+        let user = await User.where({
+            openid: openid
+        }).findOne()
+        const userInfo = req.body.authInfo.userInfo || {}
+        if (!user) { //找不到用户就创建用户
+            user = new User();
+            user.name = userInfo.nickName;
+            user.loginname = userInfo.nickName;
+            user.pass = tools.bhash('pass');
+            user.email = '';
+            user.avatar = userInfo.avatarUrl;
+            user.active = true;
+            user.openid = openid;
+            user.accessToken = uuid.v4();
+            await user.save();
+        } else { // 找到用戶就更新用戶
+            await User.updateOne({
+                openid: openid
+            }, {
+                name: userInfo.nickName,
+                avatar: userInfo.avatarUrl
+            })
         }
-        // 找到该用户说明已绑定，直接更新用户信息
-        User.update({
-            _id: user._id
-        }, {
-            wxUserInfo: req.body.userInfo
-        })
-        //返回登陆用户信息
+        // 生成jwt
+        const token = jwt.sign({openid}, jwtSecret, {
+            expiresIn: 60 * 60 * 24// 授权时效24小时
+        });
         return res.status(200).json({
             success: true,
-            error_msg: '登录成功',
-            data: {
-                name: user.name,
-                profile_image_url: user.profile_image_url,
-                score: user.score,
-            }
+            data: token
         })
-    }))
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            error_msg: `服务器错误，${JSON.stringify(e)}`
+        })
+    }
 }
 
 
 exports.putAction = function (req, res, next) {
     var token = validator.trim(req.body.token || req.query.token || req.headers['x-access-token']);
     var name = req.body.name || '';
-    var pass = req.body.pass || '';
+    var pass = validator.trim(req.body.pass || '');
     if (token) {
         // 解码 token (验证 secret 和检查有效期（exp）)
-        jwt.verify(token, jwtSecret, function (err, userId) {
+        jwt.verify(token, jwtSecret, function (err, {openid}) {
             if (err) {
                 return res.json({success: false, error_msg: '无效的token.'});
             } else {
@@ -208,20 +144,17 @@ exports.putAction = function (req, res, next) {
                     pd.name = name
                 }
                 if (pass) {
-                    tools.bhash(pass, function (passhash) {
-                        pd.pass = passhash
-                        User.update({
-                            _id: userId
-                        }, pd)
-                    })
-                } else {
-                    User.update({
-                        _id: userId
-                    }, pd)
+                    pd.pass = tools.bhash(pass)
                 }
-
+                User.update({
+                    openid: openid
+                }, pd)
             }
         });
+        return res.status(200).json({
+            success: true,
+            error_msg: '修改成功'
+        })
     } else {
         return res.status(403).json({
             success: false,
