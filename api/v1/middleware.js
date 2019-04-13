@@ -12,7 +12,7 @@ var auth = function (req, res, next) {
     // 解码 token (验证 secret 和检查有效期（exp）)
     jwt.verify(token, jwtSecret, function (err, tokenObj) {
       if (err) {
-        return res.json({success: false, error_msg: '无效的token.'});
+        return res.json({success: false, error_msg: '无效的jwt token.'});
       } else {
         openid = tokenObj.openid
       }
@@ -25,7 +25,7 @@ var auth = function (req, res, next) {
     }).findOne().then(user=>{
       if (!user) {
         res.status(401);
-        return res.send({success: false, error_msg: '错误的accessToken'});
+        return res.send({success: false, error_msg: '错误的jwt Token'});
       }
       if (user.is_block) {
         res.status(403);

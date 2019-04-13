@@ -72,6 +72,12 @@ var show = function (req, res, next) {
 
 exports.show = show;
 
+exports.me = function (req, res, next) {
+  return res.status(200).json({
+      success: true,
+      data: {user: req.user}
+  })
+}
 // 本站用戶綁定微信用戶
 exports.weixinBind =  function(req,res,next){
     var token = validator.trim(req.body.token || req.query.token || req.headers['x-access-token']);
@@ -103,6 +109,7 @@ exports.weixinLogin = async function (req, res, next) {
             user.pass = tools.bhash('');
             user.email = '';
             user.avatar = userInfo.avatarUrl;
+            user.location = userInfo.city;
             user.active = true;
             user.openid = openid;
             user.accessToken = uuid.v4();
@@ -112,21 +119,22 @@ exports.weixinLogin = async function (req, res, next) {
                 openid: openid
             }, {
                 name: userInfo.nickName,
-                avatar: userInfo.avatarUrl
+                avatar: userInfo.avatarUrl,
+                location: userInfo.city
             })
         }
         // 生成jwt
         const token = jwt.sign({openid}, jwtSecret, {
-            expiresIn: 60 * 60 * 24// 授权时效24小时
+            expiresIn: 60 * 60 * 24 * 30// 授权时效30天
         });
         return res.status(200).json({
             success: true,
-            data: token
+            data: {jwtToken: token}
         })
     } catch (e) {
         return res.status(500).json({
             success: false,
-            error_msg: `服务器错误，${JSON.stringify(e)}`
+            error_msg: `服务器错误，${e}`
         })
     }
 }
