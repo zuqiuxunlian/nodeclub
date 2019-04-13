@@ -98,8 +98,9 @@ exports.weixinLogin = async function (req, res, next) {
         if (!user) { //找不到用户就创建用户
             user = new User();
             user.name = userInfo.nickName;
+            user.location = userInfo.city;
             user.loginname = shortid.generate();
-            user.pass = tools.bhash('pass');
+            user.pass = tools.bhash('');
             user.email = '';
             user.avatar = userInfo.avatarUrl;
             user.active = true;
