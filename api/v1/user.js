@@ -14,6 +14,8 @@ var User = models.User;
 var tools = require('../../common/tools');
 var got = require('got')
 var uuid    = require('node-uuid');
+var shortid = require('shortid');
+
 var show = function (req, res, next) {
     var loginname = req.params.loginname;
     var ep = new eventproxy();
@@ -96,7 +98,7 @@ exports.weixinLogin = async function (req, res, next) {
         if (!user) { //找不到用户就创建用户
             user = new User();
             user.name = userInfo.nickName;
-            user.loginname = userInfo.nickName;
+            user.loginname = shortid.generate();
             user.pass = tools.bhash('pass');
             user.email = '';
             user.avatar = userInfo.avatarUrl;
