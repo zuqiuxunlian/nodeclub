@@ -1,7 +1,7 @@
 var UserModel  = require('../../models').User;
 var eventproxy = require('eventproxy');
 var validator  = require('validator');
-var jwtSecret = 'k4TrFwWSGAFPE7MdAh1NrZ5YZHKbrkW5'
+var jwtSecret = require('../../config').session_secret;
 var jwt = require('jsonwebtoken');
 
 // 非登录用户直接屏蔽
