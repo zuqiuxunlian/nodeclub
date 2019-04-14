@@ -54,6 +54,8 @@ https://github.com/zuqiuxunlian/wechat-cnode
 通过小程序授权产生的token
 `GET /me?token=""`
 
+小程序的token用的jwt token，有过期时间设置。可以用来访问所有其他的API
+
 通过web登录产生的token
 `GET /me?accesstoken=""`
 
