@@ -21,7 +21,7 @@ exports.validateId = function (str) {
 
 exports.bhash = function (str, callback) {
   var res = bcrypt.hashSync(str,10)
-  return callback ? callback(res):res
+  return callback ? callback(null, res):res
 };
 
 exports.bcompare = function (str, hash, callback) {
