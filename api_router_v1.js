@@ -26,12 +26,9 @@ router.get('/topic_collect/:loginname', topicCollectController.list);
 
 // 用户
 router.get('/user/:loginname', userController.show);
-router.get('/me', middleware.auth, userController.me);
 router.post('/user/weixin/login', userController.weixinLogin);
-router.post('/user/weixin/bind', userController.weixinBind);
-router.put('/user', userController.putAction);
-
-
+router.get('/me', middleware.auth, userController.me);
+router.post('/me', middleware.auth, userController.update);
 
 // accessToken 测试
 router.post('/accesstoken', middleware.auth, toolsController.accesstoken);
