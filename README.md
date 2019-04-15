@@ -27,6 +27,7 @@ https://github.com/cnodejs/nodeclub
 https://github.com/zuqiuxunlian/wechat-cnode
 
 ## 新增API接口
+API PATH: https://bbs.zuqiuxunlian.com/v1/api
 
 ### 小程序登录
 通过 wx.login() 接口获得临时登录凭证 code 后传到开发者服务器调用此接口完成登录流程.
@@ -55,6 +56,7 @@ https://github.com/zuqiuxunlian/wechat-cnode
 `GET /me?token=""`
 
 小程序的token用的jwt token，有过期时间设置。可以用来访问所有其他的API
+
 
 通过web登录产生的token
 `GET /me?accesstoken=""`
@@ -86,6 +88,41 @@ https://github.com/zuqiuxunlian/wechat-cnode
         "openid": "xxxxxxxxx-Whs040",
         "accessToken": "6b34cd10-xxxxxxxxxxxxxxx",
     }
+}
+```
+
+### 用户信息修改
+修改用户名和密码，可以用于web登录。
+
+`POST /me`  需要认证
+
+**Body**
+```
+{
+	"loginname": "", //用户名，不能重复
+	"name": "", //昵称
+	"email": "awong1900s@163.com", //邮箱也是唯一
+	"url": "", //个人网站
+	"location": "", //位置
+	"weibo": "",
+	"signature": "" //个人介绍
+}
+```
+
+**Response**
+200
+```
+{
+    "success": true,
+    "error_msg": "修改成功"
+}
+```
+500
+```
+{
+    "success": false,
+    "errno": 1,
+    "error_msg": "该用户名已使用"
 }
 ```
 
