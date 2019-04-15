@@ -72,12 +72,11 @@ var show = function (req, res, next) {
 
 exports.show = show;
 
-// 本站用戶綁定微信用戶
-exports.weixinBind = function (req, res, next) {
-  var token = validator.trim(req.body.token || req.query.token || req.headers['x-access-token']);
-  var loginname = validator.trim(req.body.name).toLowerCase();
-  var pass = validator.trim(req.body.pass);
-  // TODO: 需要讨论一下绑定流程
+exports.me = function (req, res, next) {
+  return res.status(200).json({
+      success: true,
+      data: req.user
+  })
 }
 exports.weixinLogin = async function (req, res, next) {
   try {
