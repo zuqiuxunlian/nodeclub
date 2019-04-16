@@ -29,6 +29,7 @@ router.get('/user/:loginname', userController.show);
 router.post('/user/weixin/login', userController.weixinLogin);
 router.get('/me', middleware.auth, userController.me);
 router.post('/me', middleware.auth, userController.update);
+router.post('/me/change_password', middleware.auth, userController.changePassword);
 
 // accessToken 测试
 router.post('/accesstoken', middleware.auth, toolsController.accesstoken);

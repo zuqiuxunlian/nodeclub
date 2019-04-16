@@ -206,3 +206,26 @@ exports.update = async function (req, res, next) {
     })
   }
 }
+
+
+exports.changePassword = async function (req, res, next) {
+  const newPass = validator.trim(req.body.newPass || '')
+  const rePass = validator.trim(req.body.rePass || '')
+  if(newPass !== rePass){
+    return res.status(500).json({
+      success: false,
+      error_msg: '确认密码不一致，请重新输入'
+    })
+  }
+
+  const passhash = tools.bhash(newPass);
+  await User.update({
+    _id: req.user._id
+  },{
+    pass: passhash
+  })
+  return res.status(200).json({
+    success: true,
+    error_msg: '修改成功'
+  })
+}
