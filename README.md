@@ -35,13 +35,16 @@ API PATH: https://bbs.zuqiuxunlian.com/v1/api
 `POST /user/weixin/login`
 
 **body**
+
 ```
 {
     "code": "023eO7eP1npiz91QGvdP1NkdeP1eO7eK",
     "authInfo": Object
 }
 ```
+
 **Response**
+
 ```
 {
   "success": true,
@@ -62,6 +65,7 @@ API PATH: https://bbs.zuqiuxunlian.com/v1/api
 `GET /me?accesstoken=""`
 
 **Response**
+
 ```
 {
     "success": true,
@@ -97,6 +101,7 @@ API PATH: https://bbs.zuqiuxunlian.com/v1/api
 `POST /me`  需要认证
 
 **Body**
+
 ```
 {
 	"loginname": "", //用户名，不能重复
@@ -110,19 +115,45 @@ API PATH: https://bbs.zuqiuxunlian.com/v1/api
 ```
 
 **Response**
+
 200
+
 ```
 {
     "success": true,
     "error_msg": "修改成功"
 }
 ```
+
 500
+
 ```
 {
     "success": false,
     "errno": 1,
     "error_msg": "该用户名已使用"
+}
+```
+
+### 用户密码修改
+`POST /me/change_password`  需要认证
+
+**Body**
+
+这里没有让用户输入原密码，考虑到产品安全性要求不高，此处接受这样处理。
+```
+{
+	"newPass": "newpassxxxx",
+	"rePass": "newpassxxxx"
+}
+```
+**Response**
+
+200
+```
+{
+    "success": true,
+    "error_msg": "修改成功"
 }
 ```
 
