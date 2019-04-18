@@ -86,10 +86,11 @@ exports.weixinLogin = async function (req, res, next) {
     const resJson = await got(`https://api.weixin.qq.com/sns/jscode2session?appid=${WEIXIN_OAUTH.appid}&secret=${WEIXIN_OAUTH.secret}&js_code=${code}&grant_type=authorization_code`, {
       json: true
     });
-    console.log(resJson.body)
+    console.error(JSON.stringify(resJson.body, undefined, 2));
     const sessionKey = resJson.body.session_key;
     var data = WXBizDataCrypt(WEIXIN_OAUTH.appid, sessionKey).decryptData(encryptedData, iv);
-    var openid = data.openId
+    var openid = data.openId;
+    console.error(JSON.stringify(data, undefined, 2));
     let user = await User.where({
       openid: openid
     }).findOne()
@@ -123,9 +124,10 @@ exports.weixinLogin = async function (req, res, next) {
       data: token
     })
   } catch (e) {
+    console.log(e);
     return res.status(500).json({
       success: false,
-      error_msg: `服务器错误，${JSON.stringify(e)}`
+      error_msg: `服务器错误，${e}`
     })
   }
 }
