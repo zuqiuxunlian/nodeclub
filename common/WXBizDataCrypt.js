@@ -8,9 +8,9 @@ function WXBizDataCrypt(appId, sessionKey) {
       console.error(this.appId,this.sessionKey,encryptedData,iv)
 
       // base64 decode
-      var sessionKey = new Buffer(this.sessionKey, 'base64')
-      encryptedData = new Buffer(encryptedData, 'base64')
-      iv = new Buffer(iv, 'base64')
+      var sessionKey = Buffer.from(this.sessionKey, 'base64')
+      encryptedData = Buffer.from(encryptedData, 'base64')
+      iv = Buffer.from(iv, 'base64')
 
       try {
         // 解密
