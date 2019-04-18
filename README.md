@@ -157,6 +157,26 @@ API PATH: https://bbs.zuqiuxunlian.com/v1/api
 }
 ```
 
+### 获取上传token
+`GET /me/upload_token`  需要认证
+
+上传token用于客户端上传图片到七牛云。token有效期为24小时。
+
+上传Token使用文档：https://github.com/qiniu/nodejs-sdk/blob/master/docs/nodejs-sdk-v7.md
+
+上传文件命名用hash命名，避免重复上传：https://developer.qiniu.com/kodo/kb/1365/how-to-avoid-the-users-to-upload-files-with-the-same-key
+
+**Response**
+
+data值即为upload token
+
+200
+```
+{
+    "success": true,
+    "data": ":Sxxxxxxxxxxx"
+}
+```
 ## License
 
 MIT

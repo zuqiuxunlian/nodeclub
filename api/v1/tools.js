@@ -1,4 +1,8 @@
 var eventproxy = require('eventproxy');
+const qiniu = require("qiniu");
+const proc = require("process");
+var qn_access = require('../../config').qn_access;
+
 
 var accesstoken = function (req, res, next) {
   var ep = new eventproxy();
@@ -12,3 +16,21 @@ var accesstoken = function (req, res, next) {
   });
 };
 exports.accesstoken = accesstoken;
+
+
+var upload_token = function (req, res, next) {
+  var ep = new eventproxy();
+  ep.fail(next);
+  var accessKey = qn_access.accessKey;
+  var secretKey = qn_access.secretKey;
+  var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+  var bucket = qn_access.bucket;
+  var options = {
+    scope: bucket,
+    expires: 60*60*24  //自定义凭证有效期(24小时)
+  }
+  var putPolicy = new qiniu.rs.PutPolicy(options);
+  var uploadToken=putPolicy.uploadToken(mac);
+  res.send({success: true, data: uploadToken});
+}
+exports.upload_token = upload_token;
