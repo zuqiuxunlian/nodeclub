@@ -158,7 +158,7 @@ API PATH: https://bbs.zuqiuxunlian.com/v1/api
 ```
 
 ### 获取上传token
-`GET /me/upload_token`  需要认证
+`GET /upload_token`  需要认证
 
 上传token用于客户端上传图片到七牛云。token有效期为24小时。
 
