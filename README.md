@@ -177,6 +177,34 @@ data值即为upload token
     "data": ":Sxxxxxxxxxxx"
 }
 ```
+
+### 动态设置API
+`GET /weapp_config`
+
+最好同时隐藏发帖和回帖窗口。
+
+|参数|描述|
+|-----|----|
+|has_post| 是否开放小程序发帖和回帖|
+|card_ads|首页推广，未来使用|
+ 
+
+`200`
+```
+{
+    "success": true,
+    "data": {
+        "has_post": false,
+        "card_ads": [
+            {
+                "label": "",
+                "herf": "",
+                "img_src": ""
+            }
+        ]
+    }
+}
+```
 ## License
 
 MIT
