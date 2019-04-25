@@ -36,6 +36,8 @@ router.post('/accesstoken', middleware.auth, toolsController.accesstoken);
 // 七牛的上传token
 // TODO: 此处认证存在风险
 router.get('/upload_token', middleware.auth, toolsController.upload_token);
+// 小程序的动态设置
+router.get('/weapp_config', toolsController.weapp_config);
 
 // 评论
 router.post('/topic/:topic_id/replies', middleware.auth, limit.peruserperday('create_reply', config.create_reply_per_day, {showJson: true}), replyController.create);

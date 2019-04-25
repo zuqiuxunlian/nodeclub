@@ -2,7 +2,7 @@ var eventproxy = require('eventproxy');
 const qiniu = require("qiniu");
 const proc = require("process");
 var qn_access = require('../../config').qn_access;
-
+var weapp_opts = require('../../config').weapp_opts;
 
 var accesstoken = function (req, res, next) {
   var ep = new eventproxy();
@@ -34,3 +34,11 @@ var upload_token = function (req, res, next) {
   res.send({success: true, data: uploadToken});
 }
 exports.upload_token = upload_token;
+
+
+var weapp_config = function (req, res, next) {
+  var ep = new eventproxy();
+  ep.fail(next);
+  res.send({success: true, data: weapp_opts});
+}
+exports.weapp_config = weapp_config;

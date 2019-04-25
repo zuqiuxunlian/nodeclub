@@ -144,6 +144,18 @@ var config = {
   create_reply_per_day: 1000, // 每个用户一天可以发的评论数
   create_user_per_ip: 1000, // 每个 ip 每天可以注册账号的次数
   visit_per_day: 1000, // 每个 ip 每天能访问的次数
+  
+  // 小程序动态设置
+  weapp_opts: {
+    has_post: false,
+    card_ads: [
+      {
+        'label': '',
+        'herf': '',
+        'img_src': ''
+      }
+    ]
+  }
 };
 
 if (process.env.NODE_ENV === 'test') {
