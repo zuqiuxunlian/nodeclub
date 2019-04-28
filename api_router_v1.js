@@ -16,8 +16,8 @@ var router            = express.Router();
 router.get('/topics', topicController.index);
 router.get('/topic/:id', middleware.tryAuth, topicController.show);
 router.post('/topics', middleware.auth, limit.peruserperday('create_topic', config.create_post_per_day, {showJson: true}), topicController.create);
-router.post('/topics/update', middleware.auth, topicController.update);
-
+router.post('/topics/:id', middleware.auth, topicController.update);
+router.delete('/topics/:id', middleware.auth, topicController.delete);
 
 // 主题收藏
 router.post('/topic_collect/collect', middleware.auth, topicCollectController.collect); // 关注某话题
@@ -41,6 +41,7 @@ router.get('/weapp_config', toolsController.weapp_config);
 
 // 评论
 router.post('/topic/:topic_id/replies', middleware.auth, limit.peruserperday('create_reply', config.create_reply_per_day, {showJson: true}), replyController.create);
+router.delete('/reply/:reply_id', middleware.auth, replyController.delete);
 router.post('/reply/:reply_id/ups', middleware.auth, replyController.ups);
 
 // 通知

@@ -185,7 +185,7 @@ var create = function (req, res, next) {
 exports.create = create;
 
 exports.update = function (req, res, next) {
-  var topic_id = _.trim(req.body.topic_id);
+  var topic_id = req.params.id;
   var title    = _.trim(req.body.title);
   var tab      = _.trim(req.body.tab);
   var content  = _.trim(req.body.content);
@@ -239,5 +239,35 @@ exports.update = function (req, res, next) {
       res.status(403)
       return res.send({success: false, error_msg: '对不起，你不能编辑此话题。'});
     }
+  });
+};
+
+exports.delete = function (req, res, next) {
+  //删除话题, 话题作者topic_count减1
+  //删除回复，回复作者reply_count减1
+  //删除topic_collect，用户collect_topic_count减1
+  var topic_id = req.params.id;
+  
+  TopicProxy.getFullTopic(topic_id, function (err, err_msg, topic, author, replies) {
+    if (!topic) {
+      res.status(400);
+      return res.send({ success: false, error_msg: '此话题不存在或已被删除。' });
+    }
+    if (topic.author_id.equals(req.user._id) || req.user.is_admin) {
+      author.score -= 5;
+      author.topic_count -= 1;
+      author.save();
+
+      topic.deleted = true;
+      topic.save(function (err) {
+        if (err) {
+          return res.send({ success: false, error_msg: err.message });
+        }
+        res.send({success: true, topic_id: topic.id});
+      });
+    } else {
+      res.status(403)
+      return res.send({success: false, error_msg: '对不起，你不能编辑此话题。'});
+    };
   });
 };

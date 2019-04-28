@@ -119,3 +119,31 @@ var ups = function (req, res, next) {
 };
 
 exports.ups = ups;
+
+exports.delete = function (req, res, next) {
+  var reply_id = req.params.reply_id;
+  Reply.getReplyById(reply_id, function (err, reply) {
+    if (err) {
+      return next(err);
+    }
+
+    if (!reply) {
+      res.status(404);
+      return res.send({success: false, error_msg: '评论不存在'});
+    }
+    if (reply.author_id.toString() === req.user._id.toString() || req.user.is_admin) {
+      reply.deleted = true;
+      reply.save();
+      res.send({success: true, reply_id: reply_id});
+      
+      reply.author.score -= 5;
+      reply.author.reply_count -= 1;
+      reply.author.save();
+    } else {
+      res.send({success: false, error_msg: "对不起，你不能删除此评论。"});
+      return;
+    }
+
+    Topic.reduceCount(reply.topic_id, _.noop);
+  });
+};

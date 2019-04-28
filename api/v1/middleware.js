@@ -2,6 +2,7 @@ var UserModel  = require('../../models').User;
 var eventproxy = require('eventproxy');
 var validator  = require('validator');
 var jwtSecret = require('../../config').session_secret;
+var config = require('../../config');
 var jwt = require('jsonwebtoken');
 
 // 非登录用户直接屏蔽
@@ -31,6 +32,9 @@ var auth = function (req, res, next) {
         res.status(403);
         return res.send({success: false, error_msg: '您的账户被禁用'});
       }
+      if (config.admins.hasOwnProperty(user.loginname)) {
+        user.is_admin = true;
+      }
       req.user = user;
       next();
     })
@@ -49,6 +53,9 @@ var auth = function (req, res, next) {
     if (user.is_block) {
       res.status(403);
       return res.send({success: false, error_msg: '您的账户被禁用'});
+    }
+    if (config.admins.hasOwnProperty(user.loginname)) {
+      user.is_admin = true;
     }
     req.user = user;
     next();
