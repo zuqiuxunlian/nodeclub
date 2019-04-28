@@ -147,7 +147,7 @@ var config = {
   
   // 小程序动态设置
   weapp_opts: {
-    has_post: false,
+    review_version: '1.0.1',
     card_ads: [
       {
         'label': '',
