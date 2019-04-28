@@ -35,10 +35,14 @@ var upload_token = function (req, res, next) {
 }
 exports.upload_token = upload_token;
 
-
 var weapp_config = function (req, res, next) {
+  var version = req.headers['version'];
   var ep = new eventproxy();
   ep.fail(next);
-  res.send({success: true, data: weapp_opts});
+  if (version == weapp_opts.review_version) {
+    res.send({success: true, data: {has_post: false}});
+  } else {
+    res.send({success: true, data: {has_post: true}});
+  }
 }
 exports.weapp_config = weapp_config;
