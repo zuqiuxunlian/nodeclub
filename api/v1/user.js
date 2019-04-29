@@ -117,7 +117,7 @@ exports.weixinLogin = async function (req, res, next) {
     }
     // 生成jwt
     const token = jwt.sign({openid}, jwtSecret, {
-      expiresIn: 60 * 60 * 24// 授权时效24小时
+      expiresIn: 60 * 60 * 24 * 30// 授权时效30天
     });
     return res.status(200).json({
       success: true,
