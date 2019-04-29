@@ -34,8 +34,8 @@ router.post('/me/change_password', middleware.auth, userController.changePasswor
 // accessToken 测试
 router.post('/accesstoken', middleware.auth, toolsController.accesstoken);
 // 七牛的上传token
-// TODO: 此处认证存在风险
-router.get('/upload_token', middleware.auth, toolsController.upload_token);
+// REVIEW: 此处存在被滥用风险
+router.get('/upload_token', toolsController.upload_token);
 // 小程序的动态设置
 router.get('/weapp_config', toolsController.weapp_config);
 
