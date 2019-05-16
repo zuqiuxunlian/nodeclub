@@ -142,6 +142,16 @@
 </div>
 <div id="sidebar-mask"></div>
 
+<!-- 小程序码浮层 -->
+<div class="float-miniprogram" id="showFloatLayer">小程序访问</div>
+<div class="float-miniprogram-content">
+  <div class="inner-content">
+    <img class="miniapp-qrcode" src="<%- staticFile('/public/images/weapp.jpg') %>" />
+    <p class="tip-info">请用微信扫码，或者在微信环境长按扫码可识别跳转到小程序</p>
+  </div>
+</div>
+<!-- End 小程序码浮层 -->
+
 <% if (config.google_tracker_id) { %>
 <script>
   // google analytics
@@ -169,6 +179,17 @@ var _hmt = _hmt || [];
   hm.src = "https://hm.baidu.com/hm.js?<%- config.baidu_tracker_id %>";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
+
+  // 小程序码浮层
+  $('#showFloatLayer').click(function() {
+    $('.float-miniprogram-content').addClass('active');
+  })
+  $('.float-miniprogram-content').click(function(e) {
+    var tagName = e.target.tagName.toLowerCase();
+    if (tagName === 'img' || tagName === 'p' || e.target.className === 'inner-content') return;
+    $('.float-miniprogram-content').removeClass('active');
+  })
+  // End 小程序码浮层
 })();
 </script>
 <% } %>

@@ -1315,3 +1315,59 @@ textarea.editor {
 .sponsor_outlink:hover {
   text-decoration: none;
 }
+
+// 小程序浮层
+.float-miniprogram {
+  position: fixed;
+  right: 0;
+  top: 20%;
+  display: block;
+  overflow: hidden;
+  background: #80bd01;
+  z-index: 9999;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  padding: 6px 10px;
+  border-radius: 4px 0 0 4px;
+  color: #fff;
+  cursor: pointer;
+}
+.float-miniprogram-content {
+  position: fixed;
+  top: -110%;
+  right: 0;
+  bottom: 110%;
+  left: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0);
+  z-index: 9999;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s, top .4s, bottom .4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.float-miniprogram-content .inner-content {
+  width: 70%;
+  max-width: 320px;
+  background: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+}
+.float-miniprogram-content .inner-content .tip-info {
+  padding-top: 6px;
+}
+.float-miniprogram-content.miniapp-qrcode {
+  display: block;
+  width: 100%;
+}
+.float-miniprogram-content.active {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.6);
+}
+// End 小程序浮层
