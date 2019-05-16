@@ -42,20 +42,20 @@ describe('test/middlewares/proxy.test.js', function () {
       });
   });
 
-  it('should allow gravatar.com', function (done) {
-    var url = 'https://gravatar.com/avatar/28d69c69c1c1a040436124238f7cc937?size=48&d=monsterid';
-    nock('https://gravatar.com')
-      .get('/avatar/28d69c69c1c1a040436124238f7cc937?size=48')
-      .reply(200, 'gravatar');
-
-    supertest.get('/agent')
-      .query({
-        url: url,
-      })
-      .end(function (err, res) {
-        res.text.should.eql('gravatar');
-        done(err);
-      });
-  });
+  // it('should allow gravatar.com', function (done) {
+  //   var url = 'https://gravatar.com/avatar/28d69c69c1c1a040436124238f7cc937?size=48&d=monsterid';
+  //   nock('https://gravatar.com')
+  //     .get('/avatar/28d69c69c1c1a040436124238f7cc937?size=48')
+  //     .reply(200, 'gravatar');
+  //
+  //   supertest.get('/agent')
+  //     .query({
+  //       url: url,
+  //     })
+  //     .end(function (err, res) {
+  //       res.text.should.eql('gravatar');
+  //       done(err);
+  //     });
+  // });
 
 });
