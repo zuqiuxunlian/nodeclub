@@ -26,3 +26,4 @@ public/upload/*
 *.swp
 
 package-lock.json
+yarn.lock
