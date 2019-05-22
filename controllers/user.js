@@ -41,7 +41,7 @@ exports.index = function (req, res, next) {
         recent_topics: recent_topics,
         recent_replies: recent_replies,
         token: token,
-        pageTitle: util.format('@%s 的个人主页', user.loginname),
+        pageTitle: util.format('@%s 的个人主页', user.name),
       });
     };
 
