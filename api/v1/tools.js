@@ -40,9 +40,9 @@ var weapp_config = function (req, res, next) {
   var ep = new eventproxy();
   ep.fail(next);
   if (version == weapp_opts.review_version) {
-    res.send({success: true, data: {has_post: false}});
+    res.send({success: true, data: {has_post: false, card_ads: weapp_opts.card_ads}});
   } else {
-    res.send({success: true, data: {has_post: true}});
+    res.send({success: true, data: {has_post: true, card_ads: weapp_opts.card_ads}});
   }
 }
 exports.weapp_config = weapp_config;
