@@ -197,10 +197,17 @@ data值即为upload token
         "has_post": false,
         "card_ads": [
             {
-                "label": "",
-                "herf": "",
-                "img_src": ""
-            }
+		'name': '广告名称',
+		'path': '/pages/article/detail?from=list&id=5d1f03a7fe663115042cd0b6',
+		'appid': '',
+		'image': 'https://img2.tuhu.org/activity/image/FjaSVA7uSZuH5EHrp9CHTPcnpwgT_w750_h230.jpeg'
+            },
+	    {
+	        'name': '广告名称2',
+		'path': '/pages/article/detail?from=list&id=5d1f03a7fe663115042cd0b6',
+		'appid': '',
+		'image': 'https://img2.tuhu.org/activity/image/FjaSVA7uSZuH5EHrp9CHTPcnpwgT_w750_h230.jpeg'
+	    }
         ]
     }
 }
