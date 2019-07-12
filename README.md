@@ -186,7 +186,25 @@ data值即为upload token
 |参数|描述|
 |-----|----|
 |has_post| 是否开放小程序发帖和回帖|
-|card_ads|首页推广，未来使用|
+
+`200`
+```
+{
+    "success": true,
+    "data": {
+        "has_post": false
+    }
+}
+```
+
+### 首页广告API
+`GET /ads`
+
+最好同时隐藏发帖和回帖窗口。
+
+|参数|描述|
+|-----|----|
+|card_ads|首页推广|
  
 
 `200`
@@ -194,7 +212,6 @@ data值即为upload token
 {
     "success": true,
     "data": {
-        "has_post": false,
         "card_ads": [
             {
                 'name': '广告名称',
@@ -212,6 +229,7 @@ data值即为upload token
     }
 }
 ```
+
 ## License
 
 MIT

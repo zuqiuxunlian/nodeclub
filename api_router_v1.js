@@ -38,6 +38,8 @@ router.post('/accesstoken', middleware.auth, toolsController.accesstoken);
 router.get('/upload_token', toolsController.upload_token);
 // 小程序的动态设置
 router.get('/weapp_config', toolsController.weapp_config);
+// 小程序的首页广告
+router.get('/ads', toolsController.ads);
 
 // 评论
 router.post('/topic/:topic_id/replies', middleware.auth, limit.peruserperday('create_reply', config.create_reply_per_day, {showJson: true}), replyController.create);

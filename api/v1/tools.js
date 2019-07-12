@@ -46,3 +46,23 @@ var weapp_config = function (req, res, next) {
   }
 }
 exports.weapp_config = weapp_config;
+
+var ads = function (req, res, next) {
+  var ep = new eventproxy();
+  ep.fail(next);
+    res.send(
+      {
+        success: true,
+        data: {
+          card_ads: [
+            {
+              'name': '线下教练沙龙',
+              'path': '/pages/article/detail?from=list&id=5d043517679e547c4566a8d6',
+              'appid': '',
+              'image': 'https://static.zuqiuxunlian.com/e64a0ad35a870aa14e4f7204ffbfde66.png'
+            }
+          ]
+        }
+      });
+}
+exports.ads = ads;
