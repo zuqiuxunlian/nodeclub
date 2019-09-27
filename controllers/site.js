@@ -156,3 +156,8 @@ exports.weapp = function (req, res, next) {
     res.set('Content-Type', 'text/html');
     res.send('bcaff1aae6662c978a17bfe5fcc9238f');
 };
+
+exports.weapp2 = function (req, res, next) {
+    res.set('Content-Type', 'text/html');
+    res.send('aa3ed3339ad32802ed41bdf960573aa0');
+};

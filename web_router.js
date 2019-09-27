@@ -36,6 +36,7 @@ router.get('/sitemap.xml', site.sitemap);
 router.get('/app/download', site.appDownload);
 // weapp authorize
 router.get('/aqyttVbDNP.txt', site.weapp);
+router.get('/OM4M2gbtwT.txt', site.weapp2);
 
 // sign controller
 if (config.allow_sign_up) {
