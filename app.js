@@ -41,7 +41,9 @@ var renderMiddleware = require('./middlewares/render');
 var logger = require('./common/logger');
 var helmet = require('helmet');
 var bytes = require('bytes')
-
+var WechatAPI = require('co-wechat-api');
+var WEIXIN_OAUTH = require('./config').WEIXIN_OAUTH;
+global.wechatAPI = new WechatAPI(WEIXIN_OAUTH.appid, WEIXIN_OAUTH.secret);
 
 // 静态文件目录
 var staticDir = path.join(__dirname, 'public');

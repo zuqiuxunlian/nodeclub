@@ -6,7 +6,8 @@ var Reply      = require('../../proxy').Reply;
 var at         = require('../../common/at');
 var message    = require('../../common/message');
 var config     = require('../../config');
-
+var sendTmpToOpenid = require('../../common/send_tmp_to_openid');
+var moment = require('moment');
 var create = function (req, res, next) {
   var topic_id = req.params.topic_id;
   var content  = req.body.content || '';
@@ -25,7 +26,7 @@ var create = function (req, res, next) {
     res.status(400);
     return res.send({success: false, error_msg: '不是有效的话题id'});
   }
-  
+
   Topic.getTopic(topic_id, ep.done(function (topic) {
     if (!topic) {
       res.status(404);
@@ -45,6 +46,18 @@ var create = function (req, res, next) {
   ep.all('topic', 'topic_author', function (topic, topicAuthor) {
     Reply.newAndSave(content, topic_id, req.user.id, reply_id, ep.done(function (reply) {
       Topic.updateLastReply(topic_id, reply._id, ep.done(function () {
+        // 发送小程序模板消息
+        if(topicAuthor._id !== req.user.id){
+          sendTmpToOpenid({
+            openid: topicAuthor.openid,
+            topic,
+            data:{
+              keyword1: topic.title,
+              keyword2: reply.content,
+              keyword3: moment(reply.create_at).format('YYYY-MM-DD HH:mm:ss'),
+            }
+          });
+        }
         ep.emit('reply_saved', reply);
         //发送at消息，并防止重复 at 作者
         var newContent = content.replace('@' + topicAuthor.loginname + ' ', '');
@@ -85,7 +98,7 @@ var ups = function (req, res, next) {
     res.status(400);
     return res.send({success: false, error_msg: '不是有效的评论id'});
   }
-  
+
   Reply.getReplyById(replyId, function (err, reply) {
     if (err) {
       return next(err);
