@@ -2,6 +2,7 @@
  * nodeclub - controllers/topic.js
  */
 
+
 /**
  * Module dependencies.
  */
@@ -18,7 +19,9 @@ var store        = require('../common/store');
 var config       = require('../config');
 var _            = require('lodash');
 var cache        = require('../common/cache');
-var logger = require('../common/logger')
+var logger = require('../common/logger');
+var moment = require('moment');
+var sendTmpToOpenid = require('../common/send_tmp_to_openid');
 
 /**
  * Topic page
@@ -301,7 +304,7 @@ exports.top = function (req, res, next) {
     res.render404('此话题不存在或已被删除。');
     return;
   }
-  Topic.getTopic(topic_id, function (err, topic) {
+  Topic.getTopicById(topic_id,(err, topic, author, last_reply)=>{
     if (err) {
       return next(err);
     }
@@ -315,6 +318,16 @@ exports.top = function (req, res, next) {
         return next(err);
       }
       var msg = topic.top ? '此话题已置顶。' : '此话题已取消置顶。';
+      // 发送小程序模板消息
+      sendTmpToOpenid({
+        openid: author.openid,
+        topic,
+        data:{
+          keyword1: topic.title,
+          keyword2: msg,
+          keyword3: moment().format('YYYY-MM-DD HH:mm:ss'),
+        }
+      });
       res.render('notify/notify', {success: msg, referer: referer});
     });
   });
@@ -325,7 +338,7 @@ exports.good = function (req, res, next) {
   var topicId = req.params.tid;
   var referer = req.get('referer');
 
-  Topic.getTopic(topicId, function (err, topic) {
+  Topic.getTopicById(topicId,(err, topic, author, last_reply)=>{
     if (err) {
       return next(err);
     }
@@ -339,6 +352,16 @@ exports.good = function (req, res, next) {
         return next(err);
       }
       var msg = topic.good ? '此话题已加精。' : '此话题已取消加精。';
+      sendTmpToOpenid({
+        openid: author.openid,
+        topic,
+        data:{
+          keyword1: topic.title,
+          keyword2: msg,
+          keyword3: moment().format('YYYY-MM-DD HH:mm:ss'),
+        }
+      });
+
       res.render('notify/notify', {success: msg, referer: referer});
     });
   });
@@ -348,7 +371,7 @@ exports.good = function (req, res, next) {
 exports.lock = function (req, res, next) {
   var topicId = req.params.tid;
   var referer = req.get('referer');
-  Topic.getTopic(topicId, function (err, topic) {
+  Topic.getTopicById(topicId,(err, topic, author, last_reply)=>{
     if (err) {
       return next(err);
     }
@@ -362,6 +385,15 @@ exports.lock = function (req, res, next) {
         return next(err);
       }
       var msg = topic.lock ? '此话题已锁定。' : '此话题已取消锁定。';
+      sendTmpToOpenid({
+        openid: author.openid,
+        topic,
+        data:{
+          keyword1: topic.title,
+          keyword2: msg,
+          keyword3: moment().format('YYYY-MM-DD HH:mm:ss'),
+        }
+      });
       res.render('notify/notify', {success: msg, referer: referer});
     });
   });

@@ -10,6 +10,7 @@
     "bcryptjs": "2.3.0",
     "body-parser": "1.17.1",
     "bytes": "^2.2.0",
+    "co-wechat-api": "^3.10.0",
     "colors": "1.1.2",
     "compression": "1.7.0",
     "connect-busboy": "0.0.2",

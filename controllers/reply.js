@@ -7,6 +7,8 @@ var User       = require('../proxy').User;
 var Topic      = require('../proxy').Topic;
 var Reply      = require('../proxy').Reply;
 var config     = require('../config');
+var moment = require('moment');
+var sendTmpToOpenid = require('../common/send_tmp_to_openid');
 
 /**
  * 添加回复
@@ -45,6 +47,18 @@ exports.add = function (req, res, next) {
     Reply.newAndSave(content, topic_id, req.session.user._id, reply_id, ep.done(function (reply) {
       Topic.updateLastReply(topic_id, reply._id, ep.done(function () {
         ep.emit('reply_saved', reply);
+        if(topicAuthor._id !== req.session.user._id){
+          sendTmpToOpenid({
+            openid: topicAuthor.openid,
+            topic,
+            data:{
+              keyword1: topic.title,
+              keyword2: reply.content,
+              keyword3: moment(reply.create_at).format('YYYY-MM-DD HH:mm:ss'),
+            }
+          });
+        }
+
         //发送at消息，并防止重复 at 作者
         var newContent = content.replace('@' + topicAuthor.loginname + ' ', '');
         at.sendMessageToMentionUsers(newContent, topic_id, req.session.user._id, reply._id);
