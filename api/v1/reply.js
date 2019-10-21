@@ -50,11 +50,13 @@ var create = function (req, res, next) {
         if(topicAuthor._id !== req.user.id){
           sendTmpToOpenid({
             openid: topicAuthor.openid,
+            tmpId: `a8iPMuTt0pXqUULHybESYNG2SEoa8gBIcXsD0uwJZsM`,
             topic,
             data:{
-              keyword1: topic.title,
-              keyword2: reply.content,
-              keyword3: moment(reply.create_at).format('YYYY-MM-DD HH:mm:ss'),
+              thing1: topic.title,
+              thing2: reply.content,
+              time3: moment(reply.create_at).format('YYYY年MM月DD HH:mm'),
+              thing4: `如不需要本文章的提醒，可以在设置中关闭本文的消息提醒。`
             }
           });
         }

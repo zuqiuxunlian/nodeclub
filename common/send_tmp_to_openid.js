@@ -1,7 +1,7 @@
 var $http = require("superagent");
 var logger = require('../common/logger');
 
-function wordlimit(cname = "", wordlength = 20) {
+function wordlimit(cname = "", wordlength = 40) {
   let tmp = cname;
   if (cname.length > wordlength) {
     tmp = cname.substr(0, wordlength) + '...';

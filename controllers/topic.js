@@ -321,11 +321,12 @@ exports.top = function (req, res, next) {
       // 发送小程序模板消息
       sendTmpToOpenid({
         openid: author.openid,
+        tmpId: `-OQCRR6UwU6At0ZQwamYbHtY3f9O0iYZ5aBLkRYzqDE`,
         topic,
         data:{
-          keyword1: topic.title,
-          keyword2: msg,
-          keyword3: moment().format('YYYY-MM-DD HH:mm:ss'),
+          phrase1: topic.title,
+          thing2: `${moment().format('YYYY年MM月DD HH:mm')} ${msg}`,
+          thing3: `点击进入小程序可查看详情`,
         }
       });
       res.render('notify/notify', {success: msg, referer: referer});
@@ -354,11 +355,12 @@ exports.good = function (req, res, next) {
       var msg = topic.good ? '此话题已加精。' : '此话题已取消加精。';
       sendTmpToOpenid({
         openid: author.openid,
+        tmpId: `-OQCRR6UwU6At0ZQwamYbHtY3f9O0iYZ5aBLkRYzqDE`,
         topic,
         data:{
-          keyword1: topic.title,
-          keyword2: msg,
-          keyword3: moment().format('YYYY-MM-DD HH:mm:ss'),
+          phrase1: topic.title,
+          thing2: `${moment().format('YYYY年MM月DD HH:mm')} ${msg}`,
+          thing3: `点击进入小程序可查看详情`,
         }
       });
 
@@ -387,11 +389,12 @@ exports.lock = function (req, res, next) {
       var msg = topic.lock ? '此话题已锁定。' : '此话题已取消锁定。';
       sendTmpToOpenid({
         openid: author.openid,
+        tmpId: `-OQCRR6UwU6At0ZQwamYbHtY3f9O0iYZ5aBLkRYzqDE`,
         topic,
         data:{
-          keyword1: topic.title,
-          keyword2: msg,
-          keyword3: moment().format('YYYY-MM-DD HH:mm:ss'),
+          phrase1: topic.title,
+          thing2: `${moment().format('YYYY年MM月DD HH:mm')} ${msg}`,
+          thing3: `点击进入小程序可查看详情`,
         }
       });
       res.render('notify/notify', {success: msg, referer: referer});
