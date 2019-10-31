@@ -47,19 +47,19 @@ exports.add = function (req, res, next) {
     Reply.newAndSave(content, topic_id, req.session.user._id, reply_id, ep.done(function (reply) {
       Topic.updateLastReply(topic_id, reply._id, ep.done(function () {
         ep.emit('reply_saved', reply);
-        if(topicAuthor._id !== req.session.user._id){
-          sendTmpToOpenid({
-            openid: topicAuthor.openid,
-            tmpId: `a8iPMuTt0pXqUULHybESYNG2SEoa8gBIcXsD0uwJZsM`,
-            topic,
-            data:{
-              thing1: topic.title,
-              thing2: reply.content,
-              time3: moment(reply.create_at).format('YYYY年MM月DD日 HH:mm'),
-              thing4: `可在小程序设置中关闭本文的消息提醒`
-            }
-          });
-        }
+        // if(topicAuthor._id !== req.session.user._id){
+        //   sendTmpToOpenid({
+        //     openid: topicAuthor.openid,
+        //     tmpId: `a8iPMuTt0pXqUULHybESYNG2SEoa8gBIcXsD0uwJZsM`,
+        //     topic,
+        //     data:{
+        //       thing1: topic.title,
+        //       thing2: reply.content,
+        //       time3: moment(reply.create_at).format('YYYY年MM月DD日 HH:mm'),
+        //       thing4: `可在小程序设置中关闭本文的消息提醒`
+        //     }
+        //   });
+        // }
 
         //发送at消息，并防止重复 at 作者
         var newContent = content.replace('@' + topicAuthor.loginname + ' ', '');

@@ -319,16 +319,16 @@ exports.top = function (req, res, next) {
       }
       var msg = topic.top ? '此话题已置顶。' : '此话题已取消置顶。';
       // 发送小程序模板消息
-      sendTmpToOpenid({
-        openid: author.openid,
-        tmpId: `-OQCRR6UwU6At0ZQwamYbHtY3f9O0iYZ5aBLkRYzqDE`,
-        topic,
-        data:{
-          phrase1: topic.title,
-          thing2: `${moment().format('YYYY年MM月DD HH:mm')} ${msg}`,
-          thing3: `点击进入小程序可查看详情`,
-        }
-      });
+      // sendTmpToOpenid({
+      //   openid: author.openid,
+      //   tmpId: `-OQCRR6UwU6At0ZQwamYbHtY3f9O0iYZ5aBLkRYzqDE`,
+      //   topic,
+      //   data:{
+      //     phrase1: topic.title,
+      //     thing2: `${moment().format('YYYY年MM月DD HH:mm')} ${msg}`,
+      //     thing3: `点击进入小程序可查看详情`,
+      //   }
+      // });
       res.render('notify/notify', {success: msg, referer: referer});
     });
   });
