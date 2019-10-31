@@ -50,11 +50,13 @@ exports.add = function (req, res, next) {
         if(topicAuthor._id !== req.session.user._id){
           sendTmpToOpenid({
             openid: topicAuthor.openid,
+            tmpId: `a8iPMuTt0pXqUULHybESYNG2SEoa8gBIcXsD0uwJZsM`,
             topic,
             data:{
-              keyword1: topic.title,
-              keyword2: reply.content,
-              keyword3: moment(reply.create_at).format('YYYY-MM-DD HH:mm:ss'),
+              thing1: topic.title,
+              thing2: reply.content,
+              time3: moment(reply.create_at).format('YYYY年MM月DD日 HH:mm'),
+              thing4: `可在小程序设置中关闭本文的消息提醒`
             }
           });
         }
