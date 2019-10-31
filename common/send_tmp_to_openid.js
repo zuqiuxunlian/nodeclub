@@ -15,9 +15,11 @@ module.exports = async function sendTmpToOpenid({
                                                   tmpId = "5ytfiXSkxlNAEbUtAdV4C_QU4-gDdihMYYFlQHfvs4E",
                                                   data = {}
                                                 }) {
-  const cloneData = JSON.parse(JSON.stringify(data))
+  const cloneData = JSON.parse(JSON.stringify(data));
   Object.keys(cloneData).forEach(key => {
-    cloneData[key] = wordlimit(cloneData[key])
+    cloneData[key] = {
+      value: wordlimit(cloneData[key])
+    }
   });
   var {accessToken} = await wechatAPI.getAccessToken();
   const sendData = {
@@ -29,14 +31,14 @@ module.exports = async function sendTmpToOpenid({
   const res = await $http.post(`https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${accessToken}`)
       .send(sendData)
       .then(res => {
-        let json = {}
+        let json = {};
         try {
           json = JSON.parse(res.body)
         } catch (e) {
           json = res.body
         }
         return json
-      })
+      });
   if (res.errcode === 0) {
     logger.info(`调用发送模板成功`);
   } else {
