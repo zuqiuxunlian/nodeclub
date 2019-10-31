@@ -26,7 +26,7 @@ module.exports = async function sendTmpToOpenid({
   const sendData = {
     touser: openid,
     template_id: tmpId,
-    page: `article/detail?id=${topic._id}`,
+    page: `article/detail?from=list&id=${topic._id}`,
     data: cloneData
   };
   const res = await $http.post(`https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${accessToken}`)
