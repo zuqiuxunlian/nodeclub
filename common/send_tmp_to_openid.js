@@ -20,13 +20,14 @@ module.exports = async function sendTmpToOpenid({
     cloneData[key] = wordlimit(cloneData[key])
   });
   var {accessToken} = await wechatAPI.getAccessToken();
+  const sendData = {
+    touser: openid,
+    template_id: tmpId,
+    page: `article/detail?id=${topic._id}`,
+    data: cloneData
+  };
   const res = await $http.post(`https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${accessToken}`)
-      .send({
-        touser: openid,
-        template_id: tmpId,
-        page: `article/detail?id=${topic._id}`,
-        data: cloneData
-      })
+      .send(sendData)
       .then(res => {
         let json = {}
         try {
@@ -39,6 +40,6 @@ module.exports = async function sendTmpToOpenid({
   if (res.errcode === 0) {
     logger.info(`调用发送模板成功`);
   } else {
-    logger.error(`调用发送模板失败，返回${JSON.stringify(res)}`);
+    logger.error(`调用发送模板失败，返回${JSON.stringify(res)}，发送信息${JSON.stringify(sendData)}`);
   }
 };
