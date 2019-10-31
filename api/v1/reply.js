@@ -55,8 +55,8 @@ var create = function (req, res, next) {
             data:{
               thing1: topic.title,
               thing2: reply.content,
-              time3: moment(reply.create_at).format('YYYY年MM月DD HH:mm'),
-              thing4: `如不需要本文章的提醒，可以在设置中关闭本文的消息提醒。`
+              time3: moment(reply.create_at).format('YYYY年MM月DD日 HH:mm'),
+              thing4: `可在小程序设置中关闭本文的消息提醒`
             }
           });
         }
