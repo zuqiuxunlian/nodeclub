@@ -55,6 +55,12 @@ var ads = function (req, res, next) {
         success: true,
         data: {
           card_ads: [
+            {
+              'name': '像一颗糖果',
+              'path': 'pages/index/main',
+              'appid': 'wx8ce4b6f550abdc09',
+              'image': 'https://static.zuqiuxunlian.com/1efe008851d8e23ffd506d24e8ece109.jpg'
+            }
           ]
         }
       });
