@@ -55,12 +55,6 @@ var ads = function (req, res, next) {
         success: true,
         data: {
           card_ads: [
-            {
-              'name': '线下教练沙龙',
-              'path': '/pages/article/detail?from=list&id=5d043517679e547c4566a8d6',
-              'appid': '',
-              'image': 'https://static.zuqiuxunlian.com/e64a0ad35a870aa14e4f7204ffbfde66.png'
-            }
           ]
         }
       });
